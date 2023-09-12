@@ -40,3 +40,28 @@ def q3():
 #q3()
 
 
+def q4(n):
+    if n == 0:
+        print("1")
+        return [1]
+
+    prev_row = q4(n - 1)
+    row = [1]
+
+    for i in range(1, n):
+        row.append(prev_row[i - 1] + prev_row[i])
+
+    row.append(1)
+
+    for num in row:
+        print(num, end=" ")
+    print()
+
+    return row
+
+n = int(input("Please enter a number: "))
+print(q4(n))
+
+
+
+
