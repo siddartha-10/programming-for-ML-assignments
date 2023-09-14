@@ -25,7 +25,8 @@ def q3():
     a = a.tolist() # converting numpy array to list
     b = b.tolist() # converting numpy array to list
     list1 = a + b
-    #print(list1)
+    # print(a)
+    # print(b)
     union = []
     intersection = []
     for i in list1:
@@ -37,7 +38,7 @@ def q3():
     print("a intersect b = ", intersection)
     print("a union b = ",union)
 
-#q3()
+q3()
 
 
 def q4(n):
@@ -59,8 +60,8 @@ def q4(n):
 
     return row
 
-n = int(input("Please enter a number: "))
-print(q4(n))
+# n = int(input("Please enter a number: "))
+# print(q4(n))
 
 
 
