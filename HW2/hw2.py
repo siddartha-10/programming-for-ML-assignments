@@ -12,5 +12,4 @@ def q1(roots):
 
 
 # Test cases
-print(q1([2, 3]))  # Output: [1, -5, 6]
-print(q1([3, 4, 5]))  # Output: [1, -12, 47, -60]
+print(q1([2, 3])) 
