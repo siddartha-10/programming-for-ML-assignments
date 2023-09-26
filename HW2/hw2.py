@@ -10,7 +10,8 @@ def q1(roots):
 
     return poly
 
-#print(q1([2,3]))
+print(q1([2,3]))
+print(q1([3,4,5]))
 
 
 def q2(coefficients):
