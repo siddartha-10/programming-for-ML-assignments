@@ -85,8 +85,8 @@ e1 = exp(var('x'), 4)
 print(toString(e))  # Output: "((x * y) * (x + 3))"
 print(toString(e1)) # Output: "(x^4)"
 
-derivative_e = deriv(e, 'x')
-derivative_e1 = deriv(e1, 'x')
-
-print(toString(derivative_e))  # Output: "(((1 * y) + (x * 0)) * (x + 3)) + ((x * y) * (1 + 0))"
-print(toString(derivative_e1)) # Output: "(4 * (x^3))"
+# derivative_e = deriv(e, 'x')
+# derivative_e1 = deriv(e1, 'x')
+#
+# print(toString(derivative_e))  # Output: "(((1 * y) + (x * 0)) * (x + 3)) + ((x * y) * (1 + 0))"
+# print(toString(derivative_e1)) # Output: "(4 * (x^3))"
