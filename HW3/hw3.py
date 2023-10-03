@@ -1,11 +1,9 @@
 def const(n):
     return ('const', n)
 
-# Helper function to create a variable expression
 def var(s):
     return ('var', s)
 
-# Helper functions for binary operations
 def plus(e1, e2):
     return ('plus', (e1, e2))
 
@@ -31,29 +29,7 @@ def toString(expr):
         e, n = b
         return f"({toString(e)}^{n})"
 
-# def deriv(u, x):
-#     tag, value = u
-#     if tag == 'const':
-#         return const(0)  # Derivative of a constant is 0
-#     elif tag == 'var':
-#         if value == x:
-#             return const(1)  # Derivative of x with respect to x is 1
-#         else:
-#             return const(0)  # Derivative of any other variable is 0
-#     elif tag == 'plus':
-#         e1, e2 = value
-#         du1 = deriv(e1, x)
-#         du2 = deriv(e2, x)
-#         return plus(du1, du2)
-#     elif tag == 'times':
-#         e1, e2 = value
-#         du1 = deriv(e1, x)
-#         du2 = deriv(e2, x)
-#         return plus(times(du1, e2), times(e1, du2))
-#     elif tag == 'exp':
-#         e, n = value
-#         du = deriv(e, x)
-#         return times(times(const(n), exp(e, n - 1)), du)
+
 def deriv(expr, x):
     a, b = expr
     # Here this condition is the base and since derivative of const is zero
