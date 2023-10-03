@@ -1,9 +1,11 @@
 def const(n):
     return ('const', n)
 
+# Helper function to create a variable expression
 def var(s):
     return ('var', s)
 
+# Helper functions for binary operations
 def plus(e1, e2):
     return ('plus', (e1, e2))
 
@@ -13,80 +15,116 @@ def times(e1, e2):
 def exp(e, n):
     return ('exp', (e, n))
 
-def toString(e):
-    tag, value = e
-    if tag == 'const':
-        return str(value)
-    elif tag == 'var':
-        return value
-    elif tag == 'plus':
-        return f'({toString(value[0])} + {toString(value[1])})'
-    elif tag == 'times':
-        return f'({toString(value[0])} * {toString(value[1])})'
-    elif tag == 'exp':
-        return f'({toString(value[0])}^{value[1]})'
+def toString(expr):
+    a, b = expr
+    if a == 'const':
+        return str(b)
+    elif a == 'var':
+        return b
+    elif a == 'plus':
+        e1, e2 = b
+        return f"({toString(e1)} + {toString(e2)})"
+    elif a == 'times':
+        e1, e2 = b
+        return f"({toString(e1)} * {toString(e2)})"
+    elif a == 'exp':
+        e, n = b
+        return f"({toString(e)}^{n})"
 
-def deriv(u, x):
-    tag, value = u
-    if tag == 'const':
+# def deriv(u, x):
+#     tag, value = u
+#     if tag == 'const':
+#         return const(0)  # Derivative of a constant is 0
+#     elif tag == 'var':
+#         if value == x:
+#             return const(1)  # Derivative of x with respect to x is 1
+#         else:
+#             return const(0)  # Derivative of any other variable is 0
+#     elif tag == 'plus':
+#         e1, e2 = value
+#         du1 = deriv(e1, x)
+#         du2 = deriv(e2, x)
+#         return plus(du1, du2)
+#     elif tag == 'times':
+#         e1, e2 = value
+#         du1 = deriv(e1, x)
+#         du2 = deriv(e2, x)
+#         return plus(times(du1, e2), times(e1, du2))
+#     elif tag == 'exp':
+#         e, n = value
+#         du = deriv(e, x)
+#         return times(times(const(n), exp(e, n - 1)), du)
+def deriv(expr, x):
+    a, b = expr
+    # Here this condition is the base and since derivative of const is zero
+    if a == 'const':
         return const(0)
-    elif tag == 'var':
-        if value == x:
-            return const(1)
+
+    # If the value of b is x then return 1 else again return 0
+    elif a == 'var':
+        return const(1) if b == x else const(0)
+
+    # I am trying to use the sum rule of this and also calling the deriv function recursively
+    elif a == 'plus':
+        e1, e2 = b
+        du1 = deriv(e1, x)
+        du2 = deriv(e2, x)
+        return plus(du1, du2)
+
+    # I am trying to use the product rule of this and also calling the deriv function recursively
+    elif a == 'times':
+        e1, e2 = b
+        du1 = deriv(e1, x)
+        du2 = deriv(e2, x)
+        return plus(times(du1, e2), times(e1, du2))
+
+    # I am trying to use the power rule of this and also calling the deriv function recursively
+    elif a == 'exp':
+        e, n = b
+        du = deriv(e, x)
+        return times(const(n), times(exp(e, n - 1), du))
+
+
+
+def simplify(expr):
+    a, b = expr
+    if a == 'plus':
+        e1, e2 = b
+        se1 = simplify(e1)
+        se2 = simplify(e2)
+        if se1 == const(0):
+            return se2
+        elif se2 == const(0):
+            return se1
         else:
+            return plus(se1, se2)
+    elif a == 'times':
+        e1, e2 = b
+        se1 = simplify(e1)
+        se2 = simplify(e2)
+        if se1 == const(0) or se2 == const(0):
             return const(0)
-    elif tag == 'plus':
-        du1 = deriv(value[0], x)
-        du2 = deriv(value[1], x)
-        return simplify(plus(du1, du2))
-    elif tag == 'times':
-        du1 = deriv(value[0], x)
-        du2 = deriv(value[1], x)
-        return simplify(plus(times(du1, value[1]), times(value[0], du2)))
-    elif tag == 'exp':
-        du = deriv(value[0], x)
-        return simplify(times(times(const(value[1]), exp(value[0], value[1] - 1)), du))
+        elif se1 == const(1):
+            return se2
+        elif se2 == const(1):
+            return se1
+        else:
+            return times(se1, se2)
+    else:
+        return expr
+# The above simple code when the expression is having plus it will look if there are any constants or not if there is then it will
+# remove the constants and returns the output similar to when there is times. If there is no plus or times in the expression then
+# it will return the original expression itself.
 
-def simplify(e):
-    tag, value = e
-    if tag == 'plus':
-        value[0] = simplify(value[0])
-        value[1] = simplify(value[1])
-        if value[0][0] == 'const' and value[0][1] == 0:
-            return value[1]
-        elif value[1][0] == 'const' and value[1][1] == 0:
-            return value[0]
-        return e
-    elif tag == 'times':
-        value[0] = simplify(value[0])
-        value[1] = simplify(value[1])
-        if value[0][0] == 'const' and value[0][1] == 0:
-            return const(0)
-        elif value[1][0] == 'const' and value[1][1] == 0:
-            return const(0)
-        elif value[0][0] == 'const' and value[0][1] == 1:
-            return value[1]
-        elif value[1][0] == 'const' and value[1][1] == 1:
-            return value[0]
-        return e
-    elif tag == 'exp':
-        value[0] = simplify(value[0])
-        if value[0][0] == 'const' and value[0][1] == 0:
-            return const(1)
-        elif value[0][0] == 'const' and value[0][1] == 1:
-            return const(1)
-        return e
-    return e
-
-# Example usage:
 e = times(times(var('x'), var('y')), plus(var('x'), const(3)))
 e1 = exp(var('x'), 4)
 
-print(toString(e))  # Output: "((x * y) * (x + 3))"
-print(toString(e1)) # Output: "(x^4)"
+print(toString(e))
+print(toString(e1))
 
-# derivative_e = deriv(e, 'x')
-# derivative_e1 = deriv(e1, 'x')
-#
-# print(toString(derivative_e))  # Output: "(((1 * y) + (x * 0)) * (x + 3)) + ((x * y) * (1 + 0))"
-# print(toString(derivative_e1)) # Output: "(4 * (x^3))"
+
+print(toString(deriv(e, 'x')))
+print(toString(deriv(e1, 'x')))
+
+print(toString(simplify(deriv(e, 'x'))))
+print(toString(simplify(deriv(e1, 'x'))))
