@@ -144,9 +144,9 @@ e = Times(Times(x, Var('y')), Plus(x, Const(3)))
 e1 = Pow(x, 4)
 e2 = Pow(Plus(x, Const(0)), 2)
 
-print(e)  # (x * y) * (x + 3)
-print(e1)  # x ** 4
-print(e2)  # (x + 0) ** 2
+print(e)
+print(e1)
+print(e2)
 
 print(e.deriv('x'))  # ((1 * y) * (x + 3)) + ((x * y) * 1)
 print(e1.deriv('x'))  # (4 * (x ** 3)*1)
@@ -154,4 +154,4 @@ print(e1.deriv('x'))  # (4 * (x ** 3)*1)
 print(e.deriv('x').simplify())  # (y * (x + 3)) + (x * y)
 print(e1.deriv('x').simplify())  # (4 * (x ** 3))
 
-print(e2.simplify())
+print(e2.simplify()) #(x ** 2)
