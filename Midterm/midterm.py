@@ -104,6 +104,12 @@ plan = PlanOfStudy()
 plan.add(cs431).add(cs481).add(cs535)\
 .add(cs715).add(cs720).add(cs723).add(cs732)\
 .add(hca740).add(hca742).add(hca745)
+
+print(plan.get700CSCredits())
+print(plan.getNonCSCredits())
+print(plan.getCSGradCredits())
+print(plan.isAcceptable())
+print(plan)
 #{output for above plan of study
 # 12
 # 9
@@ -111,10 +117,3 @@ plan.add(cs431).add(cs481).add(cs535)\
 # False
 # [CompSci535G, HCA742, HCA745, CompSci720, CompSci723, CompSci732, CompSci431G, HCA740, CompSci715, CompSci481G]
 # }
-
-
-print(plan.get700CSCredits())
-print(plan.getNonCSCredits())
-print(plan.getCSGradCredits())
-print(plan.isAcceptable())
-print(plan)
