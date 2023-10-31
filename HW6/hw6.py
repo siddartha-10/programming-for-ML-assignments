@@ -64,4 +64,4 @@ if __name__ == '__main__':
 
         start_time = time.time()
         sorted_lst = parallel_merge_sort(input_list,i)
-        print(f"Parallel merge-sort took {time.time() - start_time} seconds")
+        print(f"Parallel merge-sort took {time.time() - start_time} seconds using {i} number of threads")
