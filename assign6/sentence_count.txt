@@ -1,1 +1,0 @@
-The sentence count in the file "input.txt" is: 2
