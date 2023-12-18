@@ -3,7 +3,7 @@ def factorial(n):
     result = 1
     i = 1
     while i <= n:
-        result *= i
+        result =result * i
         print('*'.join(str(j) for j in range(1, i + 1)), '=', result)
         i += 1
     return result
